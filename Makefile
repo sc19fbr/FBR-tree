@@ -1,3 +1,9 @@
+INCLUDES = -I/home/dicl/R-tree/solar_data/hdf5-1.10.5/hdf5/include -I/home/dicl/FBR-tree/solar_data/include
+LDFLAGS = -Wl,-rpath,/home/dicl/R-tree/solar_data/hdf5-1.10.5/hdf5/lib -L/home/dicl/R-tree/solar_data/hdf5-1.10.5/hdf5/lib
+LIBS = -lhdf5     
+
+all :
+
 breakdown:
 	g++ -g -std=c++17 -O3 -o break-cow-ns1-bitlog src/main.cpp -lpthread -DBREAKDOWN 
 	g++ -g -std=c++17 -O3 -o break-cow-ns2-bitlog src/main.cpp -lpthread -DBREAKDOWN -DMULTIMETA -DNS2 
@@ -28,4 +34,10 @@ conc:
 ccclean:
 	rm conc?-*
 	rm Share-*
+
+test_hdf5:  
+	g++ -g -std=c++17 -O3 -o poissonTest main_poisson.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lrt -lpthread -DINPLACE                  g++ -g -std=c++17 -O3 -o poissonLockTest main_poisson.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lrt -lpthread -DINPLACE -DSHARED  
+	g++ -g -std=c++17 -O3 -o hdf5test main.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lpthread -DINPLACE -DCONC  
+	g++ -g -std=c++17 -O3 -o Lockhdf5test main.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lpthread -DINPLACE -DCONC -DSHARED 
+	g++ -g -std=c++17 -O3 -o onlySearch main.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lpthread -DINPLACE -DCONC -DOS 
 
