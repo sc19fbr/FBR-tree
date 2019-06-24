@@ -2,7 +2,7 @@ INCLUDES = -I/home/dicl/R-tree/solar_data/hdf5-1.10.5/hdf5/include -I/home/dicl/
 LDFLAGS = -Wl,-rpath,/home/dicl/R-tree/solar_data/hdf5-1.10.5/hdf5/lib -L/home/dicl/R-tree/solar_data/hdf5-1.10.5/hdf5/lib
 LIBS = -lhdf5     
 
-all :
+all :	breakdown conc test_hdf5
 
 breakdown:
 	g++ -g -std=c++17 -O3 -o break-cow-ns1-bitlog src/main.cpp -lpthread -DBREAKDOWN 
@@ -25,19 +25,25 @@ conc:
 	g++ -g -std=c++17 -O3 -o Share-inp-ns2-minlog src/main.cpp -lpthread -DINPLACE -DSHARED -DMULTIMETA -DNS2
 	g++ -g -std=c++17 -O3 -o rtree-cow-ns2-bitlog src/main.cpp -lpthread -DMULTIMETA -DNS2
 	g++ -g -std=c++17 -O3 -o Share-cow-ns2-bitlog src/main.cpp -lpthread -DSHARED -DMULTIMETA -DNS2
-	g++ -g -std=c++17 -O3 -o concF-inp-ns2-minlog main.cpp   -lpthread -DCONC -INPLACE -DMULTIMETA -DNS2
-	g++ -g -std=c++17 -O3 -o concS-inp-ns2-minlog main.cpp   -lpthread -DCONC -INPLACE -DSHARED -DMULTIMETA -DNS2
-	g++ -g -std=c++17 -O3 -o concS_2-inp-ns2-minlog main.cpp -lpthread -DCONC -INPLACE -DSHARED_2 -DMULTIMETA -DNS2
-	g++ -g -std=c++17 -O3 -o concF-cow-ns2-bitlog main.cpp   -lpthread -DCONC -DMULTIMETA -DNS2
-	g++ -g -std=c++17 -O3 -o concS-cow-ns2-bitlog main.cpp   -lpthread -DCONC -DSHARED -DMULTIMETA -DNS2
-	g++ -g -std=c++17 -O3 -o concS_2-cow-ns2-bitlog main.cpp -lpthread -DCONC -DSHARED_2 -DMULTIMETA -DNS2
+	g++ -g -std=c++17 -O3 -o concF-inp-ns2-minlog src/main.cpp   -lpthread -DCONC -INPLACE -DMULTIMETA -DNS2
+	g++ -g -std=c++17 -O3 -o concS-inp-ns2-minlog src/main.cpp   -lpthread -DCONC -INPLACE -DSHARED -DMULTIMETA -DNS2
+	g++ -g -std=c++17 -O3 -o concS-2-inp-ns2-minlog src/main.cpp -lpthread -DCONC -INPLACE -DSHARED_2 -DMULTIMETA -DNS2
+	g++ -g -std=c++17 -O3 -o concF-cow-ns2-bitlog src/main.cpp   -lpthread -DCONC -DMULTIMETA -DNS2
+	g++ -g -std=c++17 -O3 -o concS-cow-ns2-bitlog src/main.cpp   -lpthread -DCONC -DSHARED -DMULTIMETA -DNS2
+	g++ -g -std=c++17 -O3 -o concS-2-cow-ns2-bitlog src/main.cpp -lpthread -DCONC -DSHARED_2 -DMULTIMETA -DNS2
 ccclean:
 	rm conc?-*
 	rm Share-*
 
 test_hdf5:  
-	g++ -g -std=c++17 -O3 -o poissonTest main_poisson.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lrt -lpthread -DINPLACE                  g++ -g -std=c++17 -O3 -o poissonLockTest main_poisson.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lrt -lpthread -DINPLACE -DSHARED  
-	g++ -g -std=c++17 -O3 -o hdf5test main.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lpthread -DINPLACE -DCONC  
-	g++ -g -std=c++17 -O3 -o Lockhdf5test main.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lpthread -DINPLACE -DCONC -DSHARED 
-	g++ -g -std=c++17 -O3 -o onlySearch main.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lpthread -DINPLACE -DCONC -DOS 
+	g++ -g -std=c++17 -O3 -o poissonTest src/main_poisson.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lrt -lpthread -DINPLACE
+	g++ -g -std=c++17 -O3 -o poissonLockTest src/main_poisson.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lrt -lpthread -DINPLACE -DSHARED  
+	g++ -g -std=c++17 -O3 -o hdf5test src/main.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lpthread -DINPLACE -DCONC  
+	g++ -g -std=c++17 -O3 -o Lockhdf5test src/main.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lpthread -DINPLACE -DCONC -DSHARED 
+	g++ -g -std=c++17 -O3 -o onlySearch src/main.cpp $(INCLUDES) $(LDFLAGS) $(LIBS) -lpthread -DINPLACE -DCONC -DOS 
 
+hdclean:
+	rm poisson*
+	rm hdf5test
+	rm onlySearch
+	rm Lockhdf5test

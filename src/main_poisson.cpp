@@ -1,7 +1,7 @@
 #ifdef LOCK_SKIP
 #include "3d_rtree_skip.h"
 #else
-#include "3d_rtree.h"
+#include "3d_rtree_poi.h"
 #endif
 #include <unordered_map>
 #include "poisson.h"
